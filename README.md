@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 1 — Project Setup.** The project structure, dependency configuration, and reporting-ready Behave configuration are in place. API client logic, authentication, response validators, feature scenarios, and step definitions have not been added yet.
+**Phase 2 — Configuration and Logging.** The project now provides validated environment-based configuration and reusable sanitized logging. API client logic, authentication, response validators, feature scenarios, and step definitions have not been added yet.
 
 ## Planned architecture
 
@@ -52,4 +52,22 @@ Run the Behave suite after feature scenarios are added in a later phase:
 behave
 ```
 
-Copy `.env.example` to `.env` only when configuration loading is introduced in a later phase. Never commit `.env`.
+## Configuration
+
+Future framework components will read configuration through `config.settings.load_settings()` using standard environment variables. No additional configuration library is required.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `BASE_URL` | `https://automationexercise.com` | Base URL for the API under test |
+| `REQUEST_TIMEOUT` | `30` seconds | Positive timeout value for future HTTP requests |
+| `LOG_LEVEL` | `INFO` | Python logging level, such as `DEBUG`, `INFO`, `WARNING`, or `ERROR` |
+
+Configuration values are validated when loaded. An empty base URL, non-positive or non-numeric timeout, and invalid log level raise a clear `ValueError`.
+
+`.env.example` documents the expected variables. Copy it to `.env` only when a later phase introduces configuration-file loading; `.env` is intentionally ignored by Git and must never contain committed credentials.
+
+## Logging and sensitive data
+
+`framework.logging_utils` configures console logging and file logging at `logs/api_automation.log`. Generated logs are ignored by Git.
+
+Use `log_sanitized()` for request-like data. It recursively redacts values for sensitive keys, including `password`, `Authorization`, `token`, `access_token`, and `refresh_token`, replacing their values with `***REDACTED***`. Do not log raw credentials or tokens.
