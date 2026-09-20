@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 3 — Basic API Client.** The project now provides a reusable Requests-based client with validated configuration and sanitized logging. Behave scenarios, authentication, response validators, and live API execution have not been added yet.
+**Phase 4 — Response Validation Utilities.** The project now provides a reusable Requests-based client plus validation utilities for HTTP and JSON API responses. Behave scenarios, authentication, live API execution, and Allure reporting integration have not been added yet.
 
 ## Planned architecture
 
@@ -77,3 +77,9 @@ Use `log_sanitized()` for request-like data. It recursively redacts values for s
 `framework.api_client.ApiClient` is the shared HTTP boundary for future framework components. It uses a reusable `requests.Session`, reads the configured base URL and timeout, and provides `get`, `post`, `put`, and `delete` methods for relative endpoints.
 
 The client accepts query parameters, form data, JSON data, and request headers. It returns the original `requests.Response` without response validation or authentication behavior. Each request logs sanitized metadata, so sensitive form, JSON, and header values remain redacted.
+
+## Response validation
+
+`framework.response_validators` provides small reusable assertions for future Behave steps. It validates HTTP transport status codes, parses JSON response bodies, checks AutomationExercise JSON-envelope `responseCode` values, checks response messages, and verifies required top-level response fields.
+
+AutomationExercise can communicate its API outcome in the JSON `responseCode` field, so this validation is intentionally separate from HTTP status validation. The project does not yet include Behave scenarios, authentication, live API execution, or Allure report attachments.
