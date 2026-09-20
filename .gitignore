@@ -10,6 +10,7 @@ __pycache__/
 # Generated execution artifacts (retain directory placeholders)
 logs/*
 !logs/.gitkeep
+pretty.output
 allure-results/*
 !allure-results/.gitkeep
 allure-report/*

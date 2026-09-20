@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 4 — Response Validation Utilities.** The project now provides a reusable Requests-based client plus validation utilities for HTTP and JSON API responses. Behave scenarios, authentication, live API execution, and Allure reporting integration have not been added yet.
+**Phase 5 — Catalog API Tests with Behave BDD.** The project now includes live Behave coverage for the documented AutomationExercise catalog endpoints. Authentication, account lifecycle scenarios, and Allure reporting integration have not been added yet.
 
 ## Planned architecture
 
@@ -82,4 +82,15 @@ The client accepts query parameters, form data, JSON data, and request headers. 
 
 `framework.response_validators` provides small reusable assertions for future Behave steps. It validates HTTP transport status codes, parses JSON response bodies, checks AutomationExercise JSON-envelope `responseCode` values, checks response messages, and verifies required top-level response fields.
 
-AutomationExercise can communicate its API outcome in the JSON `responseCode` field, so this validation is intentionally separate from HTTP status validation. The project does not yet include Behave scenarios, authentication, live API execution, or Allure report attachments.
+AutomationExercise can communicate its API outcome in the JSON `responseCode` field, so this validation is intentionally separate from HTTP status validation. The project now uses these validators in the catalog Behave scenarios. Authentication, account lifecycle scenarios, and Allure report attachments remain future work.
+
+## Catalog API scenarios
+
+`features/catalog.feature` covers the documented catalog endpoints:
+
+- `GET /api/productsList`
+- `GET /api/brandsList`
+- `POST /api/searchProduct` with `search_product=top`
+- `POST /api/searchProduct` without the required parameter
+
+The step definitions call `ApiClient` and the shared response validators. They do not contain direct Requests calls or endpoint-specific response parsing outside the reusable framework layer.
