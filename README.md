@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 2 — Configuration and Logging.** The project now provides validated environment-based configuration and reusable sanitized logging. API client logic, authentication, response validators, feature scenarios, and step definitions have not been added yet.
+**Phase 3 — Basic API Client.** The project now provides a reusable Requests-based client with validated configuration and sanitized logging. Behave scenarios, authentication, response validators, and live API execution have not been added yet.
 
 ## Planned architecture
 
@@ -71,3 +71,9 @@ Configuration values are validated when loaded. An empty base URL, non-positive 
 `framework.logging_utils` configures console logging and file logging at `logs/api_automation.log`. Generated logs are ignored by Git.
 
 Use `log_sanitized()` for request-like data. It recursively redacts values for sensitive keys, including `password`, `Authorization`, `token`, `access_token`, and `refresh_token`, replacing their values with `***REDACTED***`. Do not log raw credentials or tokens.
+
+## API client
+
+`framework.api_client.ApiClient` is the shared HTTP boundary for future framework components. It uses a reusable `requests.Session`, reads the configured base URL and timeout, and provides `get`, `post`, `put`, and `delete` methods for relative endpoints.
+
+The client accepts query parameters, form data, JSON data, and request headers. It returns the original `requests.Response` without response validation or authentication behavior. Each request logs sanitized metadata, so sensitive form, JSON, and header values remain redacted.
