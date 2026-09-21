@@ -111,6 +111,11 @@ class ApiClientTests(unittest.TestCase):
 
         self.session.request.assert_not_called()
 
+    def test_close_releases_the_reusable_session(self) -> None:
+        self.client.close()
+
+        self.session.close.assert_called_once_with()
+
     def test_request_log_redacts_sensitive_form_json_and_header_values(self) -> None:
         console = StringIO()
         with TemporaryDirectory() as temporary_directory:

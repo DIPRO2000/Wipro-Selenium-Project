@@ -39,14 +39,13 @@ def after_step(context: Context, step: object) -> None:
 
 def after_scenario(context: Context, scenario: object) -> None:
     """Clean up any disposable account, then close the Requests session."""
+    api_client = getattr(context, "api_client", None)
     account_fixture = getattr(context, "account_fixture", None)
     if account_fixture is not None:
         cleanup_response = account_fixture.cleanup()
-        api_client = getattr(context, "api_client", None)
         request = getattr(api_client, "last_request", None)
         if cleanup_response is not None and request is not None:
             attach_http_exchange(request, cleanup_response, name_prefix="Account cleanup")
 
-    api_client = getattr(context, "api_client", None)
     if api_client is not None:
-        api_client.session.close()
+        api_client.close()

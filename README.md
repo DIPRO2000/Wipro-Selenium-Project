@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 8 — Allure Reporting Integration.** The project now generates sanitized Allure-compatible results for the catalog and authentication Behave scenarios. Full account lifecycle expansion and later phases have not been added yet.
+**Phase 9 — Refactoring and Cleanup.** The catalog, authentication, validation, account-fixture, and Allure foundations are implemented. This phase keeps the framework maintainable and removes generated artifacts without adding new API behavior.
 
 ## Planned architecture
 
@@ -46,7 +46,7 @@ Install the project dependencies:
 python -m pip install -r requirements.txt
 ```
 
-Run the Behave suite after feature scenarios are added in a later phase:
+Run the Behave suite:
 
 ```bash
 behave
@@ -54,7 +54,7 @@ behave
 
 ## Configuration
 
-Future framework components will read configuration through `config.settings.load_settings()` using standard environment variables. No additional configuration library is required.
+Framework components read configuration through `config.settings.load_settings()` using standard environment variables. No additional configuration library is required.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
@@ -82,7 +82,7 @@ The client accepts query parameters, form data, JSON data, and request headers. 
 
 `framework.response_validators` provides small reusable assertions for future Behave steps. It validates HTTP transport status codes, parses JSON response bodies, checks AutomationExercise JSON-envelope `responseCode` values, checks response messages, and verifies required top-level response fields.
 
-AutomationExercise can communicate its API outcome in the JSON `responseCode` field, so this validation is intentionally separate from HTTP status validation. The project now uses these validators in the catalog Behave scenarios. Authentication, account lifecycle scenarios, and Allure report attachments remain future work.
+AutomationExercise can communicate its API outcome in the JSON `responseCode` field, so this validation is intentionally separate from HTTP status validation. The project uses these validators in the catalog and authentication Behave scenarios.
 
 ## Catalog API scenarios
 
@@ -112,7 +112,11 @@ The authentication feature uses these helpers only for valid-login setup and cle
 
 AutomationExercise verifies credentials through the JSON response envelope; it does not issue bearer tokens or use OAuth. The valid-login scenario creates a unique temporary account through `AccountFixture`, verifies the credentials, and deletes the account during the scenario cleanup hook. No raw Requests calls or credentials are placed in feature files.
 
-Full account lifecycle coverage and later-phase refactoring remain future work.
+Full account lifecycle coverage remains future work.
+
+## Refactoring and cleanup
+
+`ApiClient.close()` owns release of the reusable Requests session, so Behave hooks do not reach into the session implementation directly. Generated logs, Allure results/reports, Python caches, and local configuration remain excluded from Git; `.gitkeep` files preserve the intended directories.
 
 ## Allure reporting
 

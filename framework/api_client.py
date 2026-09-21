@@ -78,6 +78,10 @@ class ApiClient:
             "DELETE", endpoint, params=params, data=data, json=json, headers=headers
         )
 
+    def close(self) -> None:
+        """Release the reusable Requests session owned by this client."""
+        self.session.close()
+
     def _send_request(
         self,
         method: str,
