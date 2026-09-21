@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 6 — Account Test Data and Cleanup Foundation.** The project now provides disposable account data and cleanup helpers for future API scenarios. Authentication, account lifecycle scenarios, and Allure reporting integration have not been added yet.
+**Phase 7 — Authentication API Tests with Behave BDD.** The project now verifies the documented AutomationExercise login behavior with disposable test-account setup and cleanup. Full account lifecycle scenarios and Allure reporting integration have not been added yet.
 
 ## Planned architecture
 
@@ -99,4 +99,17 @@ The step definitions call `ApiClient` and the shared response validators. They d
 
 `framework.account_data` creates documented AutomationExercise account form data with a unique email per account. `framework.account_fixture` delegates account creation and one-time cleanup to the shared `ApiClient`, registering cleanup only after the API reports `responseCode: 201`.
 
-These helpers are not yet connected to Behave account scenarios. Authentication, account creation/update/lookup/delete scenarios, and live account API execution remain future work.
+The authentication feature uses these helpers only for valid-login setup and cleanup. Broader account creation/update/lookup/delete scenarios remain future work.
+
+## Authentication API scenarios
+
+`features/authentication.feature` covers the documented login-verification endpoint, `POST /api/verifyLogin`, with four Behave scenarios:
+
+- valid credentials from a disposable account
+- an unregistered email and invalid password
+- a request missing the email parameter
+- the documented unsupported `DELETE` method
+
+AutomationExercise verifies credentials through the JSON response envelope; it does not issue bearer tokens or use OAuth. The valid-login scenario creates a unique temporary account through `AccountFixture`, verifies the credentials, and deletes the account during the scenario cleanup hook. No raw Requests calls or credentials are placed in feature files.
+
+Full account lifecycle coverage, Allure attachments/reporting, and later-phase refactoring remain future work.
