@@ -59,6 +59,26 @@ class ApiClientTests(unittest.TestCase):
             timeout=12.5,
         )
 
+    def test_last_request_metadata_is_available_for_reporting(self) -> None:
+        self.client.post(
+            "/api/login",
+            params={"source": "test"},
+            data={"password": "secret123"},
+            headers={"Authorization": "Bearer hidden"},
+        )
+
+        self.assertEqual(
+            self.client.last_request,
+            {
+                "method": "POST",
+                "url": "https://service.example/api/login",
+                "params": {"source": "test"},
+                "data": {"password": "secret123"},
+                "json": None,
+                "headers": {"Authorization": "Bearer hidden"},
+            },
+        )
+
     def test_put_sends_json_body_through_shared_request_boundary(self) -> None:
         self.client.put("/api/account", json={"name": "Updated User"})
 

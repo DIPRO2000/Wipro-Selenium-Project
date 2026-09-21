@@ -24,6 +24,7 @@ class ApiClient:
         self.settings = settings or load_settings()
         self.session = session or requests.Session()
         self.logger = logger or get_logger(log_level=self.settings.log_level)
+        self.last_request: dict[str, Any] | None = None
 
     def get(
         self,
@@ -88,6 +89,14 @@ class ApiClient:
         headers: Mapping[str, str] | None = None,
     ) -> requests.Response:
         url = self._build_url(endpoint)
+        self.last_request = {
+            "method": method,
+            "url": url,
+            "params": params,
+            "data": data,
+            "json": json,
+            "headers": headers,
+        }
         self._log_request(method, url, params, data, json, headers)
         return self.session.request(
             method,

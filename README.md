@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 7 — Authentication API Tests with Behave BDD.** The project now verifies the documented AutomationExercise login behavior with disposable test-account setup and cleanup. Full account lifecycle scenarios and Allure reporting integration have not been added yet.
+**Phase 8 — Allure Reporting Integration.** The project now generates sanitized Allure-compatible results for the catalog and authentication Behave scenarios. Full account lifecycle expansion and later phases have not been added yet.
 
 ## Planned architecture
 
@@ -112,4 +112,16 @@ The authentication feature uses these helpers only for valid-login setup and cle
 
 AutomationExercise verifies credentials through the JSON response envelope; it does not issue bearer tokens or use OAuth. The valid-login scenario creates a unique temporary account through `AccountFixture`, verifies the credentials, and deletes the account during the scenario cleanup hook. No raw Requests calls or credentials are placed in feature files.
 
-Full account lifecycle coverage, Allure attachments/reporting, and later-phase refactoring remain future work.
+Full account lifecycle coverage and later-phase refactoring remain future work.
+
+## Allure reporting
+
+Behave is configured with `allure_behave.formatter:AllureFormatter`, writing result files to `allure-results/`. Request and response exchanges are attached through `framework.allure_utils` with sensitive fields redacted using the existing sanitization rules. Passwords, authorization values, and tokens are never attached in raw form.
+
+If the external Allure command-line tool is installed, generate an HTML report with:
+
+```bash
+allure generate allure-results -o allure-report --clean
+```
+
+Generated result and report files are ignored by Git. The Python `allure-behave` dependency creates compatible result files; rendering the HTML report requires the separate Allure CLI.
