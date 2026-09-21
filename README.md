@@ -17,7 +17,7 @@ This REST API automation framework is being created for the Selenium/API Automat
 
 ## Current status
 
-**Phase 5 — Catalog API Tests with Behave BDD.** The project now includes live Behave coverage for the documented AutomationExercise catalog endpoints. Authentication, account lifecycle scenarios, and Allure reporting integration have not been added yet.
+**Phase 6 — Account Test Data and Cleanup Foundation.** The project now provides disposable account data and cleanup helpers for future API scenarios. Authentication, account lifecycle scenarios, and Allure reporting integration have not been added yet.
 
 ## Planned architecture
 
@@ -94,3 +94,9 @@ AutomationExercise can communicate its API outcome in the JSON `responseCode` fi
 - `POST /api/searchProduct` without the required parameter
 
 The step definitions call `ApiClient` and the shared response validators. They do not contain direct Requests calls or endpoint-specific response parsing outside the reusable framework layer.
+
+## Account test-data foundation
+
+`framework.account_data` creates documented AutomationExercise account form data with a unique email per account. `framework.account_fixture` delegates account creation and one-time cleanup to the shared `ApiClient`, registering cleanup only after the API reports `responseCode: 201`.
+
+These helpers are not yet connected to Behave account scenarios. Authentication, account creation/update/lookup/delete scenarios, and live account API execution remain future work.
