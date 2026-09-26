@@ -1,0 +1,6 @@
+username,password,expected
+standard_user,secret_sauce,success
+locked_out_user,secret_sauce,error
+wrong_user,wrong_pass,error
+standard_user,,error
+,secret_sauce,error
