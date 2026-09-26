@@ -15,6 +15,7 @@ allure-results/*
 !allure-results/.gitkeep
 allure-report/*
 !allure-report/.gitkeep
+Output/allure-report/
 
 # IDE/editor settings
 .idea/
